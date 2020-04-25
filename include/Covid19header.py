@@ -94,6 +94,7 @@ def augment_dataset(df, level):
 
     # Rename USA
     df['region'] = df['region'].apply(lambda x: re.sub('^US$','USA',x))
+    df['confirmed'] = df['confirmed'].replace(-1,0)
 
     # Add # active cases
     df['active'] = df['confirmed'] - df['death'] - df['recovered']
@@ -193,7 +194,6 @@ def doubling_rate(df,agg_level):
                 break
             else:
                 y_data = np.log(y_data)
-            
             
             popt, pcov = curve_fit(line, x_data, y_data,p0=[1.5,0])
             rate = round(get_doubling_rate(popt),2)

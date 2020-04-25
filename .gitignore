@@ -1,1 +1,4 @@
 .DS_Store
+.venvs
+.gcloudignore
+include/__pycache__/Covid19header.cpython-37.pyc

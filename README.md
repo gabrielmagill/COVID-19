@@ -1,15 +1,16 @@
 # Do the following 
 
-python3 -m venv ~/myenv
-source ~/myenv/bin/activate
 
 git clone https://github.com/gabrielmagill/COVID-19.git
 cd COVID-19
+
+python3 -m venv .venvs/dash
+source .venvs/dash/bin/activate
 pip3 install -r requirements.txt
 
-python3 src/Covid19.py
+python3 src/prep.main.py
+python3 src/main.py
 
 #on mac
-open output/covid19.plotly.dashboard.html 
-#on linux
-chrome output/covid19.plotly.dashboard.html
+open output/covid19.folium.map.html   
+open output/covid19.plotly.plot.html
