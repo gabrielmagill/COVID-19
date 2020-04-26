@@ -1,7 +1,8 @@
 # Import required libraries
 import sys
 import pathlib
-root=str(pathlib.Path(__file__).parent.absolute())+'/../'
+#root=str(pathlib.Path(__file__).parent.absolute())+'/../'
+root = './'
 sys.path.append(root+'include/')
 
 import pickle
@@ -23,7 +24,7 @@ from plotly.graph_objs import *
 
 
 app = dash.Dash(
-    __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}]
+    __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}], assets_folder='assets'
 )
 server = app.server
 
@@ -36,7 +37,9 @@ observables=[
 {'label':'New Cases','value':'new cases'},
 {'label':'Doubling Rate','value':'doubling_rate'}
 ]
-
+observables_dict={}
+for o in observables:
+        observables_dict[o['value']]=o['label']
 
 
 df_main=pd.read_csv(root+'output/temp/df_main.csv')
@@ -156,7 +159,11 @@ app.layout = html.Div(
                             className="row container-display",
                         ),
                 	html.Div(
-                	    [dcc.Graph(id="main_graph")],
+                	    [
+                             dcc.Graph( id="main_graph",
+                                        config={'displayModeBar': False}
+                                      )
+                            ],
                 	    className="pretty_container eleven columns",
                 	),
                     ],
@@ -243,6 +250,7 @@ def make_main_figure(obs,countries):
             showticklabels=True,
             linecolor='rgb(0, 0, 0)',
             linewidth=2,
+            fixedrange=True,
             ticks='outside',
             tickfont=dict(
                 family='Arial',
@@ -280,6 +288,8 @@ def make_main_figure(obs,countries):
 	xmax=max(df_main['days_since_200'].values)
 	fig.update_xaxes(range=[0, xmax+8])
 	fig.update_xaxes(title_text='# days since 200th case')
+	fig.update_yaxes(title_text=observables_dict[obs])
+
 
 	return fig
 
@@ -372,4 +382,4 @@ def update_world_deaths(world_date_slider):
 
 # Main
 if __name__ == "__main__":
-    app.run_server(debug=True)
+	app.run_server(host='0.0.0.0', port=8080, debug=True, use_reloader=False)
