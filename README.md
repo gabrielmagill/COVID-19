@@ -16,3 +16,6 @@ open output/covid19.plotly.plot.html
 
 # on chrome, point browser to this website:
 http://0.0.0.0:8080/
+
+# This is saved on GCP
+https://simple-dash-app-engine-app-dot-covid19-91.ue.r.appspot.com/
